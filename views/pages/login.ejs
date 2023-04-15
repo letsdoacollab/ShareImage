@@ -1,0 +1,22 @@
+ 
+<!DOCTYPE html>
+<html lang="en">
+<% include ../partials/header %>
+<body>
+    <% include ../partials/nav %>
+    <main>
+        <h1>Login</h1>
+        <form id="login-form" method="POST" action="/login">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+            <button type="submit">Login</button>
+            <p id="error-message"></p>
+        </form>
+        <p>Don't have an account? <a href="/signup">Sign up</a></p>
+    </main>
+    <% include ../partials/footer %>
+    <% include ../partials/scripts %>
+</body>
+</html>

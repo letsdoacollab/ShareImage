@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang=”en”>
+<% include ../partials/header %>
+<body>
+    <% include ../partials/nav %>
+    <main>
+        <div class="profile">
+            <div class="profile-picture">
+                <img src="/<%= userdata["picURL"]  %>" alt="Profile Picture">
+            </div>
+            <div class="profile-info">
+                <h1>Edit Profile</h1>
+                <form id="login-form" method="POST" action="/profile" enctype="multipart/form-data">
+                    <label for="username">Username:</label>
+                    <input type="text" value="<%= userdata["username"]  %>" id="username" name="username" required>
+                    <label for="email">Email:</label>
+                    <input type="email" id="password" value="<%= userdata["email"]  %>" name="email" required>
+                    <label for="location">Location:</label>
+                    <input type="text" id="location" value="<%= userdata["location"]  %>" name="location" required>
+                    <label for="bio">Bio:</label>
+                    <textarea id="bio" name="intro"  required><%= userdata["intro"]  %></textarea>
+                    <label for="bio">Upload file</label>
+                    <input type="file" class="form-control-file" name="myPic">
+                    <button type="submit">Save</button>
+                </form>
+            </div>
+        </div>
+    </main>
+    <style>
+        .profile-picture img {
+            border-radius: 50%;
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            margin-bottom: 20px;
+        }
+        .profile-info{
+            width:300px;
+        }
+        img {
+            overflow-clip-margin: content-box;
+            overflow: clip;
+        }
+        .profile {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+    
+        form {
+            display: flex;
+            flex-direction: column;
+            width: 100%; 
+            margin: 0 auto;
+        }
+        
+    </style>
+    <% include ../partials/footer %>
+    <% include ../partials/scripts %>
+</body>
+</html>

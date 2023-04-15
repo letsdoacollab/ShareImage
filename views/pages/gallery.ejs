@@ -1,0 +1,26 @@
+
+ 
+<!DOCTYPE html>
+<html lang="en">
+<% include ../partials/header %>
+<% include ../partials/nav %>
+<body>
+    <main>
+        <h1>Image Gallery</h1>
+        <div class="gallery">
+            <% if (photodata != []) { %>
+                <% for (var i = 0; i < photodata.length; i++) {%>
+                    <div class="gallery-item">
+                        <a href="/photos/<%= photodata[i]["photoID"]%>">
+                        <img src="../<%= photodata[i]["url"] %>" alt="Image 1">
+                        <h2><%= photodata[i]["caption"] %></h2>
+                        </a>
+                    </div>
+                <% } %>
+            <% } %>        
+        </div>
+    </main>
+    <% include ../partials/footer %>
+    <% include ../partials/scripts %>
+</body>
+</html>

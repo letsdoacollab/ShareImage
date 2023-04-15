@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang=”en”>
+<% include ../partials/header %>
+<body>
+    <% include ../partials/nav %>
+    <main>
+        <% include ../partials/message %>
+        <h1>Upload Image</h1>
+        <form action="/upload" method="post" enctype="multipart/form-data"> 
+            <label for="image">Choose an image to upload:</label>
+            <input type="file" id="image" name="myPic" accept="image/*">
+            <label for="title">Title:</label>
+            <input type="text" id="title" name="caption" required>
+            <label for="description">Description:</label>
+            <textarea id="description" name="description" required></textarea>
+            <button type="submit">Upload</button>
+        </form>
+    </main>
+    <% include ../partials/footer %>
+    <% include ../partials/scripts %>
+</body>
+</html>

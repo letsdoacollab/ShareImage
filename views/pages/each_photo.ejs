@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang=”en”>
+<!-- some comment -->
+<%# include ../partials/header %>
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+   
+    <link rel="stylesheet" href="/public/stylesheets/style.css">
+    <link rel="stylesheet" href="/public/stylesheets/gallery.css">
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        var socket = io.connect();
+        //var sessionUser = <%-JSON.stringify(user)%>;
+        //var photoID;
+        //send comment to server
+        function postComment(photoID, userID) {
+            var cmt = document.getElementById('comment-text').value; //for textarea, it needs to be DOM value
+            var cmtCount = parseInt(document.getElementById('comment-status').innerText);
+            if(cmt) {
+                socket.emit('cmt', {comment: cmt, userID: userID, photoID: photoID, cmtCount: cmtCount});
+            }
+            document.getElementById('comment-text').value = "";
+        }
+        //send likes to server
+        function liked(photoID){
+            //var like = 0;
+            var like = parseInt(document.getElementById("like-status").innerText);
+            socket.emit('like', {like: like, photoID: photoID});
+        }
+
+        //update with new comments
+        socket.on('newcmt', function(data) {
+            //to be edited
+            //document.getElementById('comment-container').innerHTML += '<div><b>' +
+            //    data.userID + '</b>: ' + data.content + '</div>'
+            var html = document.getElementById('comment-container').innerHTML;
+            document.getElementById('comment-container').innerHTML = '<li class="media">'
+                    + '<a href="/profile/'+ data.userID +'" class="pull-left">'
+                    + '<img src="../'+ data.picURL +'" alt="" class="img-circle">'
+                    + '</a>'
+                    + '<div class="media-body">'
+                    + '<span class="text-muted pull-right">'
+                    + '<small class="text-muted">'+ data.timeComment +'</small>'
+                    + '</span>'
+                    + '<strong class="text-success">@'+ data.firstname + '</strong>'
+                    + '<p> '+ data.content + '</p>'
+                    + '</div>'
+                    + '</li>'
+                    + html;
+
+        })
+
+        //update with new likes
+        socket.on('newlike', function(like) {
+            document.getElementById('like-status').innerHTML = like;
+        })
+
+        //update with new number of comments
+        socket.on('pluscmt', function(cmtCount) {
+            document.getElementById('comment-status').innerHTML = cmtCount;
+        })
+
+    </script>
+</head>
+<body>
+<% include ../partials/nav %>
+<main>
+    <div class="jumbotron">
+        <div class="container text-center">
+            <h1><%= photo_title %></h1>
+            <p><%= username %></p>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <% for (var i = 0; i < photos.length; i++) { %>
+            <div class="col-sm-4">
+                <div class="panel panel-primary">
+                    <%#User photo thumbnail & name%>
+                    <div class="panel-body"><a href="/profile/<%= photos[i].userID %>"><img src="../<%= photos[i].picURL %>" class="img-responsive" style="width:100%" alt="Image" class="img-circle"></a></div>
+                    <div class="panel-heading"><a href="/profile/<%= photos[i].userID %>"><%= photos[i].firstname %> <%= photos[i].lastname %> </a></div>
+                </div>
+            </div>
+            <div class="col-sm-8">
+                <%#Image%>
+                <div class="panel panel-primary">
+                    <div class="panel-body"><img src="../<%= photos[i].url %>" class="img-responsive" style="width:100%" alt="Image"></div>
+                    <%# Caption & Description %>
+                    <div class="panel-footer">
+                        <%#Like & Comment count status%>
+                        <% if(user != null) { %>
+                            <button type=button class="btn btn-info btn-lg" onclick = "liked(<%= photos[i].photoID %>)">
+                                <span class="glyphicon glyphicon-thumbs-up"></span> Like
+                            </button>
+                            &nbsp
+                        <% } else { %>
+                            <span class="glyphicon glyphicon-thumbs-up"></span>
+                        <% }%>
+                        <span id="like-status"> <%= photos[i].likeCount %> </span> likes &nbsp
+                        <span class="glyphicon glyphicon-comment"></span>
+                        <span id="comment-status"> <%= photos[i].cmtCount %> </span> comments
+                    </div>
+                    <div class="panel-footer">
+                        <%= photos[i].caption %>
+                    </div>
+                    <div class="panel-body">
+                        <%= photos[i].description %>
+                    </div>
+    
+                </div>
+    
+                <% if(user != null) { %>
+                    <div class="form-group" id="comment">
+                        <textarea class="form-control" placeholder="write a comment..." rows="3" id="comment-text"></textarea>
+                        <br>
+                        <button type="button" class="btn btn-info pull-right" onclick = "postComment(<%= photos[i]["photoID"]%>, <%= userID%>)">Post</button>
+                        <%#userID is a local variable from session %>
+                        <br>
+                    </div>
+                <% } %>
+                <br>
+                <%# Load previous comments %>
+                <div class="comment-wrapper">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            Photo Comments
+                        </div>
+                        <div class="panel-body">
+                            <%# comment box appears to logged-in users %>
+    
+                <% } %>
+                                <ul class="media-list">
+    
+                                    <div id="comment-container">
+                                     <% if (comments) { %>
+                                    <% for (var i = 0; i < comments.length; i++) {%>
+    
+                                        <li class="media">
+                                            <a href="/profile/<%= comments[i]["userID"]%>" class="pull-left">
+                                                <img src="../<%= comments[i]["picURL"]%>" alt="" class="img-circle">
+                                            </a>
+                                            <div class="media-body">
+                                            <span class="text-muted pull-right">
+                                                <small class="text-muted"><%= comments[i]["timeComment"]%></small>
+                                            </span>
+                                                <strong class="text-success">@<%= comments[i]["firstname"]%></strong>
+                                                <p> <%= comments[i]["content"]%> </p>
+                                            </div>
+                                            <br>
+                                        </li>
+                                    <% } %>
+                                    </div>
+                                </ul>
+    
+                            <% } %>
+    
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><br>
+    
+</main>
+
+
+
+<% %>
+<% include ../partials/footer %>
+
+</body>
+</html>

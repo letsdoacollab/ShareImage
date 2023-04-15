@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang=”en”>
+<% include ../partials/header %>
+<body>
+    <% include ../partials/nav %>
+    <main>
+        <div class="profile">
+        <div class="profile-picture">
+            <img src="/<%= userdata["picURL"] %>" alt="Profile Picture">
+        </div>
+        <div class="profile-info">
+            <h1>Username</h1>
+            <p>Name: <%= userdata["username"] %></p>
+            <p>Email: <%= userdata["email"] %></p>
+            <p>Location: <%= userdata["location"] %></p>
+            <p>Bio: <%= userdata["intro"] %></p>
+            <a href="/profile/<%= userdata["userID"] %>">Edit Profile</a>
+        </div>
+        </div>
+    </main>
+    <% include ../partials/footer %>
+    <% include ../partials/scripts %>
+</body>
+</html>

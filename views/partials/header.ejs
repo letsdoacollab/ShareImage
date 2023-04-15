@@ -1,0 +1,35 @@
+<!-- views/partials/head.ejs -->
+<head>
+    <title>Vice Footwear</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+    <% if(title == "Home") { %>
+    <link rel="stylesheet" href="/public/stylesheets/home.css">
+    <%  } %>
+    <% if(title == "Contact") { %>
+    <link rel="stylesheet" href="/public/stylesheets/contact.css">
+    <%  } %>    
+    <% if(title == "Gallery") { %>
+    <link rel="stylesheet" href="/public/stylesheets/gallery.css">
+    <%  } %>
+    <% if(title == "Register") { %>
+    <link rel="stylesheet" href="/public/stylesheets/log.css"> 
+    <%  } %>
+    <% if(title == "Login") { %>
+    <link rel="stylesheet" href="/public/stylesheets/log.css">
+    <%  } %>
+    <% if(title == "Upload") { %>
+    <link rel="stylesheet" href="/public/stylesheets/upload.css"> 
+    <%  } %>
+    <% if(title == "Profile") { %>
+    <link rel="stylesheet" href="/public/stylesheets/profile.css"> 
+    <%  } %>    
+    <% if(title == "Each_photo") { %>
+    <link rel="stylesheet" href="/public/stylesheets/gallery.css"> 
+    <link rel="stylesheet" href="/public/stylesheets/style.css"> 
+    <%  } %>  
+    <% if(title == "Profile_edit") { %>
+    <link rel="stylesheet" href="/public/stylesheets/log.css"> 
+    <%  } %>   
+</head>
